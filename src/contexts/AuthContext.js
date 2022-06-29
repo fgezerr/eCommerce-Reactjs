@@ -1,6 +1,6 @@
 import React, { createContext, useReducer } from "react";
 import axios from "../utils/axios";
-import UserReducer from "../reducer/UserReducer";
+import UserReducer from "../reducers/UserReducer";
 
 const initialState = {
   isAuthenticated: false,
@@ -22,38 +22,38 @@ export const AuthProvider = ({ children }) => {
 
   // Async Action
   async function login(email, password) {
-    try {
-      console.log(email);
-      const response = await axios.post("/auth/login", {
-        email,
-        password,
+    const response = await axios.post("/auth/login", {
+      email,
+      password,
+    });
+    const { status, user, authorization } = response.data;
+    if (status === "success") {
+      setSession(authorization.token.token);
+      dispatch({
+        type: "LOGIN",
+        payload: {
+          isAuthenticated: true,
+          user: user,
+        },
       });
-      console.log(response);
-      const { status, user, authorization } = response.data;
-      if (status === "success") {
-        setSession(authorization.token.token);
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            isAuthenticated: true,
-            user: user,
-          },
-        });
-      }
-    } catch (err) {
-      /*  dispatch({
-        type: "LOGOUT",
-        payload: err.response.data.error,
-      }); */
     }
+  }
+
+  async function logout() {
+    const response = await axios.post("/logout");
+    setSession(null);
+    dispatch({
+      type: "LOGOUT",
+    });
   }
 
   return (
     <AuthContext.Provider
       value={{
         login,
-        isAuthenticated: initialState.isAuthenticated,
-        user: initialState.user,
+        logout,
+        isAuthenticated: state.isAuthenticated,
+        user: state.user,
       }}
     >
       {children}

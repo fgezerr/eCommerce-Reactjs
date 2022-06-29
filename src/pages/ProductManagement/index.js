@@ -8,16 +8,8 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-import {
-  Box,
-  Button,
-  MenuButton,
-  Menu,
-  MenuList,
-  Icon,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { BsChevronDown } from "react-icons/bs";
+import { Box, Button } from "@chakra-ui/react";
+import Navbar from "../../components/Header/Navbar";
 
 function createData(name, trackingId, date, status) {
   return { name, trackingId, date, status };
@@ -36,37 +28,11 @@ const rows = [
   createData("Cupcake", 18908421, "2 March 2022", "Delivered", "Detail"),
 ];
 
-function index() {
+function ProductManagement() {
   return (
     <div>
-      <nav>
-        <Box
-          display="flex"
-          alignItems="center"
-          borderBottom=".5px solid lightgray"
-          h="50"
-          p={10}
-        >
-          <Menu>
-            <MenuButton
-              display="flex"
-              alignContent="center"
-              as={Button}
-              w="40"
-              rightIcon={<Icon fontWeight="bold" as={BsChevronDown} />}
-            >
-              User
-            </MenuButton>
-            <MenuList>
-              <Box w="40" display="flex" justifyContent="center">
-                <Link to="/">
-                  <Button>LogOut</Button>
-                </Link>
-              </Box>
-            </MenuList>
-          </Menu>
-        </Box>
-      </nav>
+      <Navbar />
+
       <Box display="flex" justifyContent="center" mt="8">
         <Box>
           <Button>Add Parent Category</Button>
@@ -108,4 +74,4 @@ function index() {
   );
 }
 
-export default index;
+export default ProductManagement;

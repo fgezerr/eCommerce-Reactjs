@@ -8,48 +8,20 @@ import {
   Td,
   TableContainer,
 } from "@chakra-ui/react";
-import {
-  Box,
-  Button,
-  MenuButton,
-  Menu,
-  MenuList,
-  Icon,
-} from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { BsChevronDown } from "react-icons/bs";
+import { Box, Button } from "@chakra-ui/react";
+import { FetchCategoryList } from "../../api";
+import { useQuery } from "react-query";
+import Navbar from "../../components/Header/Navbar";
 
-function index() {
+function CategoryManagement() {
+  const { isLoading, error, data } = useQuery("categories", FetchCategoryList);
+  if (isLoading) return "Loading...";
+
+  if (error) return "An error has occurred: " + error.message;
+
   return (
     <div>
-      <nav>
-        <Box
-          display="flex"
-          alignItems="center"
-          borderBottom=".5px solid lightgray"
-          h="50"
-          p={10}
-        >
-          <Menu>
-            <MenuButton
-              display="flex"
-              alignContent="center"
-              as={Button}
-              w="40"
-              rightIcon={<Icon fontWeight="bold" as={BsChevronDown} />}
-            >
-              User
-            </MenuButton>
-            <MenuList>
-              <Box w="40" display="flex" justifyContent="center">
-                <Link to="/">
-                  <Button>LogOut</Button>
-                </Link>
-              </Box>
-            </MenuList>
-          </Menu>
-        </Box>
-      </nav>
+      <Navbar />
 
       <Box display="flex" justifyContent="center" gap="10" mt="8">
         <Box>
@@ -57,7 +29,7 @@ function index() {
         </Box>
 
         <Box>
-          <Button>Add Parent Category</Button>
+          <Button>Add Sub Category</Button>
         </Box>
       </Box>
 
@@ -65,27 +37,31 @@ function index() {
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
+              <Th>Parent Categories</Th>
+              <Th>Sub Categories</Th>
               <Th>Action</Th>
             </Tr>
           </Thead>
           <Tbody>
             <Tr>
-              <Td>inches</Td>
+              <Td>
+                {data.data.map((item, id) => (
+                  <div key={id}>{item.name}</div>
+                ))}
+              </Td>
               <Td>millimetres (mm)</Td>
               <Td as={Button}>Edit</Td>
             </Tr>
-            <Tr>
-              <Td>feet</Td>
+            {/* <Tr>
+               <Td>feet</Td> 
               <Td>centimetres (cm)</Td>
               <Td as={Button}>Edit</Td>
             </Tr>
             <Tr>
-              <Td>yards</Td>
+              <Td>yards</Td> 
               <Td>metres (m)</Td>
               <Td as={Button}>Edit</Td>
-            </Tr>
+            </Tr> */}
           </Tbody>
         </Table>
       </TableContainer>
@@ -93,4 +69,4 @@ function index() {
   );
 }
 
-export default index;
+export default CategoryManagement;

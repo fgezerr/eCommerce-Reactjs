@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import Card from "../../components/Card";
 import { useQuery } from "react-query";
 import { useStateValue } from "../../contexts/StateProvider";
-
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   SimpleGrid,
   Box,
@@ -13,14 +13,24 @@ import {
   MenuList,
   Input,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import { FetchProductList } from "../../api";
 
 function Products() {
-  const [{ basket, user }] = useStateValue();
-  const { isLoading, error, data } = useQuery("products", FetchProductList);
+  const { user, logout } = useContext(AuthContext);
+  const handleLogout = async () => {
+    try {
+      await logout();
 
+      <Navigate to={"/"} />;
+    } catch (e) {
+      alert("Oturum Kapatılırken hata oluştu!.");
+    }
+  };
+  const [{ basket }] = useStateValue();
+
+  const { isLoading, error, data } = useQuery("products", FetchProductList);
   if (isLoading) return "Loading...";
 
   if (error) return "An error has occurred: " + error.message;
@@ -42,16 +52,13 @@ function Products() {
                 display="flex"
                 alignContent="center"
                 as={Button}
-                w="40"
                 rightIcon={<Icon as={BsChevronDown} />}
               >
-                {user ? user : "User"}
+                {user.name}
               </MenuButton>
               <MenuList>
                 <Box w="40" display="flex" justifyContent="center">
-                  <Link to="/">
-                    <Button>LogOut</Button>
-                  </Link>
+                  <Button onClick={handleLogout}>LogOut</Button>
                 </Box>
               </MenuList>
             </Menu>
@@ -75,9 +82,7 @@ function Products() {
           </MenuButton>
           <MenuList>
             <Box w="40" display="flex" justifyContent="center">
-              <Link to="/">
-                <Button>LogOut</Button>
-              </Link>
+              <Button>Filter</Button>
             </Box>
           </MenuList>
         </Menu>
@@ -87,12 +92,9 @@ function Products() {
         </Box>
       </Box>
       <SimpleGrid mx="40" my="10" columns={[1, 2, 3]} spacing="80px">
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
-        <Card />
+        {data.data.map((item) => (
+          <Card item={item} />
+        ))}
       </SimpleGrid>
     </div>
   );

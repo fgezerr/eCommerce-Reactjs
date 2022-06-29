@@ -2,15 +2,12 @@ import React from "react";
 import { Button, Box, Image } from "@chakra-ui/react";
 import { useStateValue } from "../../contexts/StateProvider";
 
-function Card() {
+function Card({ item }) {
   const [{}, dispatch] = useStateValue();
   const addToBasket = () => {
     dispatch({
       type: "ADD_TO_BASKET",
-      item: {
-        id: 3,
-        name: "samsung",
-      },
+      item,
     });
   };
   return (
@@ -18,8 +15,8 @@ function Card() {
       <Box h="400" borderWidth="1px" p="3" borderRadius="lg" bgColor="white">
         <Image
           h="265.67"
-          w="full"
-          src="https://picsum.photos/200/300"
+          w="auto"
+          src={item.image_path}
           alt="product"
           loading="lazy"
         />
@@ -33,11 +30,11 @@ function Card() {
             as="h4"
             lineHeight="tight"
           >
-            MacBook Pro
+            {item.name}
           </Box>
 
           <Box d="flex" justifyContent="center">
-            19500 TL
+            {item.price}
           </Box>
         </Box>
 

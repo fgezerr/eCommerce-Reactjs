@@ -10,14 +10,10 @@ import {
 import { useContext } from "react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
-import { FetchLogin } from "../../../api";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../../../contexts/AuthContext";
-/* import { useStateValue } from "../../../contexts/StateProvider"; */
 
 function Signin() {
   const { login, user } = useContext(AuthContext);
-  console.log(user);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -26,9 +22,9 @@ function Signin() {
     validationSchema,
     onSubmit: async (values, bag) => {
       try {
-        login(values.email, values.password);
+        await login(values.email, values.password);
       } catch (e) {
-        console.log(e);
+        alert("Kullanıcı Bilgileri Hatalıdır");
       }
     },
   });
@@ -81,15 +77,3 @@ function Signin() {
 }
 
 export default Signin;
-
-/* const [{}, dispatch] = useStateValue();
-  const addUser = (event) => {
-    dispatch({
-      type: "ADD_USER",
-      user: event.target.value,
-    });
-    console.log(event.target.value);
-  };
-  const setUserName = (event) => {
-    addUser(event);
-  }; */

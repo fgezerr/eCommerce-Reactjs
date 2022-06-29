@@ -1,41 +1,54 @@
 import React from "react";
-import { Box, Button, MenuButton, Menu, MenuList } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import Navbar from "../../components/Header/Navbar";
+/* import { useStateValue } from "../../contexts/StateProvider"; */
+/* import { Button, Box, Image } from "@chakra-ui/react"; */
 
 function index() {
+  /* const [{ basket }] = useStateValue(); */
   return (
     <div>
-      <nav>
-        <Box
-          justifyContent="space-between"
-          display="flex"
-          alignItems="center"
-          borderBottom=".5px solid lightgray"
-          h="10"
-          p={10}
-        >
-          <Box>
-            <Menu>
-              <MenuButton
-                display="flex"
-                alignContent="center"
-                as={Button}
-                w="40"
+      <Navbar />
+      {/*  <div>
+        {basket.map((item) => (
+          <Box
+            display="flex"
+            flexDirection={"column"}
+            borderWidth="1px"
+            p="3"
+            borderRadius="lg"
+            bgColor="red"
+          >
+            <Image
+              h="265.67"
+              overflow="hidden"
+              src={item.image_path}
+              alt="product"
+              loading="lazy"
+            />
+
+            <Box pt="5">
+              <Box
+                d="flex"
+                justifyContent="center"
+                mt="1"
+                fontWeight="semibold"
+                as="h4"
+                lineHeight="tight"
               >
-                User
-              </MenuButton>
-              <MenuList>
-                <Box w="40" display="flex" justifyContent="center">
-                  <Link to="/">
-                    <Button>LogOut</Button>
-                  </Link>
-                </Box>
-              </MenuList>
-            </Menu>
+                {item.name}
+              </Box>
+
+              <Box d="flex" justifyContent="center">
+                {item.price}
+              </Box>
+            </Box>
+
+            <Box d="flex" justifyContent="center">
+              <Button colorScheme="pink">Remove From Cart</Button>
+            </Box>
           </Box>
-        </Box>
-      </nav>
-      shoppingcart
+        ))}
+      </div> */}
     </div>
   );
 }
